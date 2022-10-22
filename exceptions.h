@@ -30,6 +30,13 @@ public:
 	void print() const override;
 };
 
+class Divizion_By_Zero : public Exception
+{
+public:
+	Divizion_By_Zero();
+	void print() const override;
+};
+
 
 
 

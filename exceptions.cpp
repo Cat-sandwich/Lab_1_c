@@ -1,7 +1,6 @@
 #include "exceptions.h"
 #include "matrix.h"
 #include <iostream>
-#define _CRT_SECURE_NO_WARNINGS
 using namespace std;
 
 
@@ -35,3 +34,9 @@ void Different_Dimensions::print() const
 	cout << "Произошла ошибка: размерности матриц не совпадают" << endl;
 }
 
+Divizion_By_Zero::Divizion_By_Zero() {}
+
+void Divizion_By_Zero::print() const
+{
+	cout << "Произошла ошибка: деление матрицы на ноль" << endl;
+}

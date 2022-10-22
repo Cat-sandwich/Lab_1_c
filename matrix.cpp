@@ -5,7 +5,17 @@
 using namespace std;
 
 
+Matrix::Matrix(int m, int n)
+{
+	this->m = m;
+	this->n = n;
 
+	data = (double**) new double* [m];
+
+	for (int i = 0; i < m; i++)
+		data[i] = (double*)new double[n];
+
+}
 Matrix::Matrix(int m, int n, double** matrix)
 {
 	this->m = m;
@@ -85,6 +95,12 @@ void Matrix::Print(const char* ObjName)
 	cout << "---------------------" << endl << endl;
 }
 
+void Matrix::Reset()
+{
+	for (int i = 0; i < m; ++i)
+		for (int j = 0; j < n; ++j)
+			data[i][j] = 0;
+}
 Matrix& Matrix::operator =(const Matrix& Matrix)
 {
 	if (n > 0)
@@ -141,6 +157,7 @@ Matrix& Matrix::operator () (int m, int n, int value)
 
 Matrix& Matrix::operator + (const Matrix& Maxtrix) {
 	if (this->m != Maxtrix.m || this->n != Maxtrix.n) throw Different_Dimensions();
+
 	for (int i = 0; i < this->m; i++) {
 		for (int j = 0; j < n; j++) {
 			this->data[i][j] += Maxtrix.data[i][j];
@@ -151,10 +168,26 @@ Matrix& Matrix::operator + (const Matrix& Maxtrix) {
 
 Matrix& Matrix::operator - (const Matrix& Matrix) {
 	if (this->m != Matrix.m || this->n != Matrix.n) throw Different_Dimensions();
+
 	for (int i = 0; i < this->m; i++) {
 		for (int j = 0; j < n; j++) {
 			this->data[i][j] -= Matrix.data[i][j];
 		}
 	}
 	return *this;
+}
+
+Matrix& Matrix::operator * (const Matrix& M)
+{
+	if (n != M.n) throw Different_Dimensions();
+
+	Matrix res(m, n);
+	res.Reset();
+
+	for (int i = 0; i < res.m; ++i)
+		for (int j = 0; j < res.n; ++j)
+			for (int k = 0; k < m; ++k)
+				res.data[i][j] += data[i][k] * M.data[k][j];
+
+	return res;
 }

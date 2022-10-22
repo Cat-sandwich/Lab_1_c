@@ -9,6 +9,7 @@ private:
 	int m, n;
 
 public:
+	Matrix(int m, int n);
 
 	Matrix(int m, int n, double** matrix);
 
@@ -28,6 +29,8 @@ public:
 
 	void Print(const char* ObjName);
 
+	void Reset();
+
 	Matrix& operator =(const Matrix& Matrix);
 
 	~Matrix();
@@ -36,8 +39,10 @@ public:
 
 	Matrix& operator () (int m, int n, int new_value);
 
-	Matrix& operator + (const Matrix& Object);
+	Matrix& operator + (const Matrix& Matrix);
 
-	Matrix& operator - (const Matrix& Object);
+	Matrix& operator - (const Matrix& Matrix);
+
+	Matrix& operator * (const Matrix& Matrix);
 };
 
