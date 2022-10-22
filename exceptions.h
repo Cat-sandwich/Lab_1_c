@@ -23,6 +23,13 @@ public:
 	void print() const override;
 };
 
+class Different_Dimensions : public Exception
+{
+public:
+	Different_Dimensions();
+	void print() const override;
+};
+
 
 
 

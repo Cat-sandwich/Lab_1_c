@@ -17,16 +17,21 @@ Invalid_Index::Invalid_Index(int i, int j, int m ,int n)
 }
 
 void Invalid_Index::print() const {
-	if ( (i < m ) || (i > m) || (j < n) || (j > n) )
-		cout << "Произошла ошибка: индекс " << i << j << " не найден" << endl;
+	cout << "Произошла ошибка: индекс " << i << j << " не найден" << endl;
 }
 
 
 Empty::Empty() {}
 
-void Empty::print() const {
+void Empty::print() const 
+{
 	cout << "Произошла ошибка: в матрице нет элементов" << endl;
 }
 
+Different_Dimensions::Different_Dimensions(){}
 
+void Different_Dimensions::print() const 
+{
+	cout << "Произошла ошибка: размерности матриц не совпадают" << endl;
+}
 

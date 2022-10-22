@@ -1,5 +1,6 @@
 #pragma once
 #include "matrix.h"
+#include "exceptions.h"
 #include <iostream>
 using namespace std;
 
@@ -48,12 +49,12 @@ void Matrix::Set_n(int n)
 		this->n = n;
 }
 
-unsigned Matrix::Get_m()
+int Matrix::Get_m()
 {
 	return m;
 }
 
-unsigned Matrix::Get_n()
+int Matrix::Get_n()
 {
 	return n;
 }
@@ -67,15 +68,13 @@ double Matrix::Get_Data(int i, int j)
 }
 void Matrix::Set_Data(int i, int j, double value)
 {
-	if ((i < 0) || (i >= m))
-		return;
-	if ((j < 0) || (j >= n))
-		return;
+	if (data == NULL) throw Empty();
 	data[i][j] = value;
 }
 
 void Matrix::Print(const char* ObjName)
 {
+	if (data == NULL) throw Empty();
 	cout << "Object: " << ObjName << endl;
 	for (int i = 0; i < m; i++)
 	{
@@ -122,4 +121,40 @@ Matrix::~Matrix()
 
 	if (m > 0)
 		delete[] data;
+}
+
+double Matrix::operator () (int m, int n)
+{
+	if ((m > this->m) || (n > this->n)) throw Invalid_Index(m, n, this->m, this->n);
+
+	return this->data[m][n];
+}
+
+Matrix& Matrix::operator () (int m, int n, int value)
+{
+	if ((m > this->m) || (n > this->n)) throw Invalid_Index(m, n, this->m, this->n);
+
+	this->data[m][n] = value;
+	return *this;
+
+}
+
+Matrix& Matrix::operator + (const Matrix& Maxtrix) {
+	if (this->m != Maxtrix.m || this->n != Maxtrix.n) throw Different_Dimensions();
+	for (int i = 0; i < this->m; i++) {
+		for (int j = 0; j < n; j++) {
+			this->data[i][j] += Maxtrix.data[i][j];
+		}
+	}
+	return *this;
+}
+
+Matrix& Matrix::operator - (const Matrix& Matrix) {
+	if (this->m != Matrix.m || this->n != Matrix.n) throw Different_Dimensions();
+	for (int i = 0; i < this->m; i++) {
+		for (int j = 0; j < n; j++) {
+			this->data[i][j] -= Matrix.data[i][j];
+		}
+	}
+	return *this;
 }

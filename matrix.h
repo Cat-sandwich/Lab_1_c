@@ -18,9 +18,9 @@ public:
 
 	void Set_n(int n = 1);
 
-	unsigned Get_m();
+	int Get_m();
 
-	unsigned Get_n();
+	int Get_n();
 
 	double Get_Data(int i, int j);
 
@@ -31,5 +31,13 @@ public:
 	Matrix& operator =(const Matrix& Matrix);
 
 	~Matrix();
+
+	double operator () (int m, int n);
+
+	Matrix& operator () (int m, int n, int new_value);
+
+	Matrix& operator + (const Matrix& Object);
+
+	Matrix& operator - (const Matrix& Object);
 };
 
