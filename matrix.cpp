@@ -191,3 +191,42 @@ Matrix& Matrix::operator * (const Matrix& M)
 
 	return res;
 }
+
+Matrix& Matrix::operator * (const double scalar)
+{
+	for (int i = 0; i < this->m; i++) {
+		for (int j = 0; j < this->n; j++) {
+			this->data[i][j] *= scalar;
+		}
+	}
+	return *this;
+}
+
+Matrix& operator * (const double scalar, Matrix& Matrix)
+{
+	return Matrix * scalar;
+}
+
+Matrix& Matrix::operator / (const int scalar) {
+	if (scalar == 0) throw Divizion_By_Zero();
+	for (int i = 0; i < this->m; i++) {
+		for (int j = 0; j < this->n; j++) {
+			this->data[i][j] /= scalar;
+		}
+	}
+	return *this;
+}
+
+double Matrix::Ñalculating_trace_matrix()
+{
+	if (n != m) throw Different_Dimensions();
+	double trace = 0;
+	for (int i = 0; i < this->m; i++) {
+		for (int j = 0; j < this->n; j++) {
+			if (i == j)
+				trace += data[i][j];
+		}
+	}
+	return trace;
+
+}

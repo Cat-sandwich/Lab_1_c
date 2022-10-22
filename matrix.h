@@ -44,5 +44,13 @@ public:
 	Matrix& operator - (const Matrix& Matrix);
 
 	Matrix& operator * (const Matrix& Matrix);
+
+	Matrix& operator * (const double scalar);
+
+	friend Matrix& operator * (const double scalar, Matrix& Matrix);
+
+	Matrix& operator / (const int scalar);
+
+	double Ñalculating_trace_matrix();
 };
 
