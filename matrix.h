@@ -35,7 +35,7 @@ public:
 
 	~Matrix();
 
-	double operator () (int m, int n);
+	double& operator () (int m, int n) const;
 
 	Matrix& operator () (int m, int n, int new_value);
 
@@ -52,5 +52,15 @@ public:
 	Matrix& operator / (const int scalar);
 
 	double Ñalculating_trace_matrix();
+
+	Matrix& Transposition();
+	 
+	void Random();
+
+	Matrix Pre_Minor(int row, int col) const;
+
+	double Determinant() const;
+
+	Matrix Allied();
 };
 

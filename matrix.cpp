@@ -2,6 +2,7 @@
 #include "matrix.h"
 #include "exceptions.h"
 #include <iostream>
+#include <random>
 using namespace std;
 
 
@@ -139,11 +140,11 @@ Matrix::~Matrix()
 		delete[] data;
 }
 
-double Matrix::operator () (int m, int n)
+double& Matrix::operator () (int m, int n) const
 {
 	if ((m > this->m) || (n > this->n)) throw Invalid_Index(m, n, this->m, this->n);
 
-	return this->data[m][n];
+	return (double&) data[m][n];
 }
 
 Matrix& Matrix::operator () (int m, int n, int value)
@@ -228,5 +229,74 @@ double Matrix::Ñalculating_trace_matrix()
 		}
 	}
 	return trace;
+}
+
+Matrix& Matrix::Transposition()
+{
+	if (data == NULL) throw Empty();
+	Matrix res(n, m);
+	res.Reset();
+
+	for (int i = 0; i < m; ++i)
+	{
+		for (int j = i; j < n; ++j)
+		{
+			res.data[i][j] = data[j][i];
+		}
+	}
+	return res;
 
 }
+
+void Matrix::Random()
+{
+	srand(time(0));
+	for (int i = 0; i < m; ++i)
+		for (int j = 0; j < n; ++j)
+			data[i][j] = 1 + rand() % 10;
+}
+
+Matrix Matrix::Pre_Minor(int row, int col) const
+{
+	if (n != m) throw Different_Dimensions();
+	Matrix New_Matrix(m - 1, n -1);
+	int i, j, in, jn;
+
+	for (i = 0, in = 0; i < m; i++) {
+		if (i != row) {
+			for (j = 0, jn = 0; j < m; j++) {
+				if (j != col) {
+					New_Matrix(in, jn++) = (*this)(i, j);
+				}
+			}
+			in++;
+		}
+	}
+	return New_Matrix;
+}
+
+double Matrix::Determinant() const
+{
+	double determ = 0;
+	if (m == 1) {
+		return (*this)(0, 0);
+	}
+	for (int i = 0; i < m; i++) {
+		double a = (*this)(0, i) * (i % 2 ? -1 : 1);
+		determ += a * this->Pre_Minor(0, i).Determinant();
+	}
+	return determ;
+}
+
+Matrix Matrix::Allied() {
+	if (((m - 1) <= 0) || (m != n))	throw Different_Dimensions();
+	
+	Matrix New_Matrix(m, n);
+	int i, j;
+
+	for (i = 0; i < m; i++) {
+		for (j = 0; j < n; j++) {
+			New_Matrix(i, j) = this->Pre_Minor(i, j).Determinant() * ((i + j) % 2 ? -1 : 1);
+		}
+	}
+	return New_Matrix;
