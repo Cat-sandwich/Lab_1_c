@@ -1,0 +1,6 @@
+Lab_1.vcxproj
+Lab_1.vcxproj.filters
+Lab_1.vcxproj.user
+.vs/
+x64/
+Lab_1.sln
