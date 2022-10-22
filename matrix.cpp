@@ -288,9 +288,10 @@ double Matrix::Determinant() const
 	return determ;
 }
 
-Matrix Matrix::Allied() {
+Matrix Matrix::Allied()
+{
 	if (((m - 1) <= 0) || (m != n))	throw Different_Dimensions();
-	
+
 	Matrix New_Matrix(m, n);
 	int i, j;
 
@@ -300,3 +301,11 @@ Matrix Matrix::Allied() {
 		}
 	}
 	return New_Matrix;
+}
+
+Matrix Matrix::Multiplication_by_Vector(const Matrix& Vector,  Matrix& M)
+{
+	if (M.n != Vector.m) throw Different_Dimensions();
+	Matrix Mat = M.Allied();
+	return Mat * Vector;
+}

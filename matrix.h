@@ -62,5 +62,7 @@ public:
 	double Determinant() const;
 
 	Matrix Allied();
+
+	Matrix Multiplication_by_Vector(const Matrix& Vector,  Matrix& M);
 };
 
