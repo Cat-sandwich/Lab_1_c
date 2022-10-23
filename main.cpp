@@ -16,19 +16,25 @@ int check()
 		{
 			cin.clear();
 			while (cin.get() != '\n');
-			cout << "Введите корректное значение размерности...\n";
+			cout << "Введите корректное значение...\n";
 		}
-		if (number <= 0) cout << "Введите корректное значение размерности...\n";
+		if (number <= 0) cout << "Введите корректное значение...\n";
 		
 	}
 	
 	return number;
 }
 
-void Add_Matrix(int* size, Matrix ** Many_Matrix, int m, int n)
+ 
+Matrix Random_Matrix(int m, int n)
 {
 	Matrix New_matrix(m, n);
 	New_matrix.Random();
+	return  New_matrix;
+}
+
+void Add_Matrix(int* size, Matrix ** Many_Matrix, Matrix New_matrix )
+{
 	*size += 1;
 	Matrix* tmp = new Matrix[*size];
 	if(*size-1 != 0)
@@ -45,7 +51,7 @@ void Print_Matrix(Matrix* Many_Matrix, int current, int size)
 {
 	
 	if (Many_Matrix == NULL) cout << "Матриц нет(\n\n";
-	else Many_Matrix[current].Print(current);
+	else (Many_Matrix)[current].Print(current+1);
 }
 
 int get_key()
@@ -59,15 +65,16 @@ void menu1()
 	int key = 0;	
 	bool menu1 = true;
 	Matrix* Many_Matrix = NULL;
-	int current = 1, size = 0;
+	Matrix New_matrix;
+	int current = 0, size = 0;
 	while (menu1)
 	{
 		
 		system("cls");
 		cout << "\tМОИ МАТРИЦЫ\n" << endl;
 		Print_Matrix(Many_Matrix, current, size);
-		cout<<"1 - Задать матрицу рандомно\n2 -Слож \n3 - Показать следующую матрицу\n"<<endl;
-		cout << "4 - Перейти к работе с элементами\n5 - Выполнить задание\n0 - Завершить работу\n" << endl;
+		cout<<"1 - Задать матрицу рандомно\n2 - Сложить две матрицы \n3 - Вычесть из одной матрицы другую\n"<<endl;
+		cout << "4 - Умножить одну матрицу на другую\n5 - Выполнить задание\n0 - Завершить работу\n" << endl;
 		cout << "-> Вправо\n-< Влево\n" << endl;
 		key = get_key();
 		int m = 0, n = 0;
@@ -81,20 +88,85 @@ void menu1()
 
 			cout << "\nВведите количество строк: " << endl; 
 			n = check();
-
 			printf("Данные считаны\n ");
 			system("pause");
+
+			New_matrix = Random_Matrix(m, n);			
+			Add_Matrix( &size, &Many_Matrix, New_matrix);
 			
-			Add_Matrix( &size, &Many_Matrix, m, n);
 			break;
 		case(50):
-
-			
+			if ((size + 1) < 2)
+			{
+				cout << "\nУ вас должно быть хотя бы две матрицы...\n" << endl;
+				system("pause");
+				break;
+			}			
+			do
+			{
+				cout << "Введите номер матрицы, которую вы хотите сложить с текущей:\n" << endl;
+				m = check();
+				system("pause");
+			} while (m > size);
+			try
+			{
+			New_matrix = Many_Matrix[current] + Many_Matrix[m - 1];
+			}
+			catch (Exception& error)
+			{
+				error.print();
+				system("pause");
+			}
+			Add_Matrix(&size, &Many_Matrix, New_matrix);
 			break;
 		case(51):
+			if ((size + 1) < 2)
+			{
+				cout << "\nУ вас должно быть хотя бы две матрицы...\n" << endl;
+				system("pause");
+				break;
+			}
+			do
+			{
+				cout << "Введите номер матрицы, которую вы хотите вычесть:\n" << endl;
+				m = check();
+				system("pause");
+			} while (m > size);
+			try
+			{
+				New_matrix = Many_Matrix[current] - Many_Matrix[m - 1];
+			}
+			catch (Exception& error)
+			{
+				error.print();
+				system("pause");
+			}
+			Add_Matrix(&size, &Many_Matrix, New_matrix);
 			
 			break;
 		case(52):
+			if ((size + 1) < 2)
+			{
+				cout << "\nУ вас должно быть хотя бы две матрицы...\n" << endl;
+				system("pause");
+				break;
+			}
+			do
+			{
+				cout << "Введите номер матрицы, которую вы хотите умножить на текущую:\n" << endl;
+				m = check();
+				system("pause");
+			} while (m > size);
+			try
+			{
+				New_matrix = Many_Matrix[current] * Many_Matrix[m - 1];
+			}
+			catch (Exception& error)
+			{
+				error.print();
+				system("pause");
+			}
+			Add_Matrix(&size, &Many_Matrix, New_matrix);
 
 			break;
 		case(53):

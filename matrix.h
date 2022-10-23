@@ -40,11 +40,11 @@ public:
 
 	Matrix& operator () (int m, int n, int new_value);
 
-	Matrix& operator + (const Matrix& Matrix);
+	Matrix operator + (const Matrix& New_Matrix);
 
-	Matrix& operator - (const Matrix& Matrix);
+	Matrix operator - (const Matrix& New_Matrix);
 
-	Matrix& operator * (const Matrix& Matrix);
+	Matrix& operator * (const Matrix& New_Matrix);
 
 	Matrix& operator * (const double scalar);
 

@@ -94,7 +94,6 @@ void Matrix::Print(const int& Number_Matrix)
 			cout << data[i][j] << "\t";
 		cout << endl;
 	}
-	cout << "---------------------" << endl << endl;
 }
 
 void Matrix::Reset()
@@ -141,7 +140,7 @@ Matrix::~Matrix()
 		delete[] data;
 }
 
-double& Matrix::operator () (int m, int n) const
+double& Matrix::operator ()(int m, int n) const
 {
 	if ((m > this->m) || (n > this->n)) throw Invalid_Index(m, n, this->m, this->n);
 
@@ -157,31 +156,32 @@ Matrix& Matrix::operator () (int m, int n, int value)
 
 }
 
-Matrix& Matrix::operator + (const Matrix& Maxtrix) {
-	if (this->m != Maxtrix.m || this->n != Maxtrix.n) throw Different_Dimensions();
-
+Matrix Matrix::operator + (const Matrix& New_Matrix) {
+	if (this->m != New_Matrix.m || this->n != New_Matrix.n) throw Different_Dimensions();
+	Matrix res(m, n);
 	for (int i = 0; i < this->m; i++) {
 		for (int j = 0; j < n; j++) {
-			this->data[i][j] += Maxtrix.data[i][j];
+			res.data[i][j] = this->data[i][j] + New_Matrix.data[i][j];
 		}
 	}
-	return *this;
+	return res;
 }
 
-Matrix& Matrix::operator - (const Matrix& Matrix) {
-	if (this->m != Matrix.m || this->n != Matrix.n) throw Different_Dimensions();
+Matrix Matrix::operator - (const Matrix& New_Matrix) {
+	if (this->m != New_Matrix.m || this->n != New_Matrix.n) throw Different_Dimensions();
 
+	Matrix res(m, n);
 	for (int i = 0; i < this->m; i++) {
 		for (int j = 0; j < n; j++) {
-			this->data[i][j] -= Matrix.data[i][j];
+			res.data[i][j] = this->data[i][j] - New_Matrix.data[i][j];
 		}
 	}
-	return *this;
+	return res;
 }
 
-Matrix& Matrix::operator * (const Matrix& M)
+Matrix& Matrix::operator * (const Matrix& New_Matrix)
 {
-	if (n != M.n) throw Different_Dimensions();
+	if (n != New_Matrix.m) throw Different_Dimensions();
 
 	Matrix res(m, n);
 	res.Reset();
@@ -189,7 +189,7 @@ Matrix& Matrix::operator * (const Matrix& M)
 	for (int i = 0; i < res.m; ++i)
 		for (int j = 0; j < res.n; ++j)
 			for (int k = 0; k < m; ++k)
-				res.data[i][j] += data[i][k] * M.data[k][j];
+				res.data[i][j] += data[i][k] * New_Matrix.data[k][j];
 
 	return res;
 }
