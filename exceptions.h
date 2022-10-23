@@ -37,5 +37,11 @@ public:
 	void print() const override;
 };
 
+class Dimensions_Incorrect : public Exception
+{
+public:
+	Dimensions_Incorrect();
+	void print() const override;
+};
 
 

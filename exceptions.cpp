@@ -40,3 +40,10 @@ void Divizion_By_Zero::print() const
 {
 	cout << "Произошла ошибка: деление матрицы на ноль" << endl;
 }
+
+Dimensions_Incorrect::Dimensions_Incorrect() {}
+
+void Dimensions_Incorrect::print() const
+{
+	cout << "Произошла ошибка: невозможно задать такую размерность матрицы" << endl;
+}

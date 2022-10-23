@@ -9,6 +9,7 @@ private:
 	int m, n;
 
 public:
+	Matrix();
 	Matrix(int m, int n);
 
 	Matrix(int m, int n, double** matrix);
@@ -27,7 +28,7 @@ public:
 
 	void Set_Data(int i, int j, double value);
 
-	void Print(const char* ObjName);
+	void Print(const int& Number_Matrix);
 
 	void Reset();
 

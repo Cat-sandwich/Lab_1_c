@@ -1,11 +1,132 @@
 #include <stdio.h>
 #include "matrix.h"
 #include "exceptions.h"
+#include <iostream>
+#include <stdio.h>
+#include <conio.h>
+#include <Windows.h>
+char NUM[] = { '0','1','2','3','4','5','6','7','8','9' };
 
+int check()
+{
+	int number = 0;
+	while (number <= 0)
+	{
+		while (!(cin >> number) || (cin.peek() != '\n'))
+		{
+			cin.clear();
+			while (cin.get() != '\n');
+			cout << "Введите корректное значение размерности...\n";
+		}
+		if (number <= 0) cout << "Введите корректное значение размерности...\n";
+		
+	}
+	
+	return number;
+}
+
+void Add_Matrix(int* size, Matrix ** Many_Matrix, int m, int n)
+{
+	Matrix New_matrix(m, n);
+	New_matrix.Random();
+	*size += 1;
+	Matrix* tmp = new Matrix[*size];
+	if(*size-1 != 0)
+	{
+		for (int i = 0; i < (* size) - 1; i++)
+		tmp[i] = (* Many_Matrix)[i];
+	delete[] (* Many_Matrix);
+	}
+	tmp[*size - 1] = New_matrix;
+	*Many_Matrix = tmp;
+	
+}
+void Print_Matrix(Matrix* Many_Matrix, int current, int size)
+{
+	
+	if (Many_Matrix == NULL) cout << "Матриц нет(\n\n";
+	else Many_Matrix[current].Print(current);
+}
+
+int get_key()
+{
+	int key = _getch();
+	if ((key == 0) || (key == 224)) key = _getch();
+	return key;
+}
+void menu1()
+{
+	int key = 0;	
+	bool menu1 = true;
+	Matrix* Many_Matrix = NULL;
+	int current = 1, size = 0;
+	while (menu1)
+	{
+		
+		system("cls");
+		cout << "\tМОИ МАТРИЦЫ\n" << endl;
+		Print_Matrix(Many_Matrix, current, size);
+		cout<<"1 - Задать матрицу рандомно\n2 -Слож \n3 - Показать следующую матрицу\n"<<endl;
+		cout << "4 - Перейти к работе с элементами\n5 - Выполнить задание\n0 - Завершить работу\n" << endl;
+		cout << "-> Вправо\n-< Влево\n" << endl;
+		key = get_key();
+		int m = 0, n = 0;
+		switch (key)
+		{
+		case(49):
+
+			cout <<"\tВведите размерность матрицы:\n\n" << endl;
+			cout << "\nВведите количество столбцов:" << endl;
+			m = check();		
+
+			cout << "\nВведите количество строк: " << endl; 
+			n = check();
+
+			printf("Данные считаны\n ");
+			system("pause");
+			
+			Add_Matrix( &size, &Many_Matrix, m, n);
+			break;
+		case(50):
+
+			
+			break;
+		case(51):
+			
+			break;
+		case(52):
+
+			break;
+		case(53):
+
+			break;
+		case(48):
+			system("cls");
+
+			system("pause");
+			menu1 = false;
+			break;
+		case 75:
+			if (current > 0) current--;
+			break;
+		case 77:
+			if (current < size-1) current++;
+			break;
+		default:
+			break;
+		}
+	}
+}
 
 int main()
 {
-
+	setlocale(LC_ALL, "RUS");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	
+	cout << "Здравствуйте! Вас приветствует программа \"МНОГО МАТРИЦ\"\n" << endl;
+	system("pause");
+	menu1();
 	system("pause");
 	return 0;
 }

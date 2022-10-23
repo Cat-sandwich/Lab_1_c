@@ -5,6 +5,7 @@
 #include <random>
 using namespace std;
 
+Matrix::Matrix(){}
 
 Matrix::Matrix(int m, int n)
 {
@@ -83,10 +84,10 @@ void Matrix::Set_Data(int i, int j, double value)
 	data[i][j] = value;
 }
 
-void Matrix::Print(const char* ObjName)
+void Matrix::Print(const int& Number_Matrix)
 {
 	if (data == NULL) throw Empty();
-	cout << "Object: " << ObjName << endl;
+	cout << "Number_Matrix: " << Number_Matrix << endl;
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -123,7 +124,7 @@ Matrix& Matrix::operator =(const Matrix& Matrix)
 		data[i] = (double*) new double[n];
 
 	for (int i = 0; i < m; i++)
-		for (int j = 0; j < n; j++)
+ 		for (int j = 0; j < n; j++)
 			data[i][j] = Matrix.data[i][j];
 	return *this;
 }
