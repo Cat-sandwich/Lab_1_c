@@ -66,6 +66,7 @@ void menu1()
 	bool menu1 = true;
 	Matrix* Many_Matrix = NULL;
 	Matrix New_matrix;
+	Matrix* Vector = NULL;
 	int current = 0, size = 0;
 	while (menu1)
 	{
@@ -73,13 +74,43 @@ void menu1()
 		system("cls");
 		cout << "\tМОИ МАТРИЦЫ\n" << endl;
 		Print_Matrix(Many_Matrix, current, size);
-		cout<<"1 - Задать матрицу рандомно\n2 - Сложить две матрицы \n3 - Вычесть из одной матрицы другую\n"<<endl;
-		cout << "4 - Умножить одну матрицу на другую\n5 - Выполнить задание\n0 - Завершить работу\n" << endl;
+
+		cout<<"1 - Задать матрицу рандомно\n2 - Сложить две матрицы \n3 - Вычесть из одной матрицы другую"<<endl;
+		cout << "4 - Умножить одну матрицу на другую\n5 - домножить на скаляр\n6 - разделить нас скаляр" << endl;
+		cout << "7 - вычислить след матрицы\n8 - выполнить задание\n0 - Завершить работу\n" << endl;
 		cout << "-> Вправо\n-< Влево\n" << endl;
+
+		double Scalar = 0;
+
 		key = get_key();
 		int m = 0, n = 0;
 		switch (key)
 		{
+		case(56):
+
+			Vector = new Matrix(3, 1);
+			Vector->Random();
+
+			Add_Matrix(&size, &Many_Matrix, *Vector);
+
+
+			if (size != 0) New_matrix = Many_Matrix[current].Multiplication_by_Vector(*Vector);
+			else
+			{
+				cout << "No matrix(" << endl;
+			}
+
+			Add_Matrix(&size, &Many_Matrix, New_matrix);
+
+			break;
+		case(55):
+			if (size != 0) cout << Many_Matrix[current].Сalculating_trace_matrix() << endl;
+			else
+			{
+				cout << "No matrix(" << endl;
+			}
+			system("pause");
+			break;
 		case(49):
 
 			cout <<"\tВведите размерность матрицы:\n\n" << endl;
@@ -169,8 +200,21 @@ void menu1()
 			Add_Matrix(&size, &Many_Matrix, New_matrix);
 
 			break;
+		case(54):
+			system("cls");
+			cout << "Введите скаляр(число с плавающей точкой):" << endl;
+			cin >> Scalar;
+			New_matrix = Many_Matrix[current] / Scalar;
+			Add_Matrix(&size, &Many_Matrix, New_matrix);
+			system("pause");
+			break;
 		case(53):
-
+			system("cls");
+			cout << "Введите скаляр(число с плавающей точкой):" << endl;
+			cin >> Scalar;
+			New_matrix = Many_Matrix[current] * Scalar;
+			Add_Matrix(&size, &Many_Matrix, New_matrix);
+			system("pause");
 			break;
 		case(48):
 			system("cls");

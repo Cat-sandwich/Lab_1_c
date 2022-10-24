@@ -179,11 +179,11 @@ Matrix Matrix::operator - (const Matrix& New_Matrix) {
 	return res;
 }
 
-Matrix& Matrix::operator * (const Matrix& New_Matrix)
+Matrix Matrix::operator * (const Matrix& New_Matrix)
 {
 	if (n != New_Matrix.m) throw Different_Dimensions();
 
-	Matrix res(m, n);
+	Matrix res(m, New_Matrix.n);
 	res.Reset();
 
 	for (int i = 0; i < res.m; ++i)
@@ -194,29 +194,35 @@ Matrix& Matrix::operator * (const Matrix& New_Matrix)
 	return res;
 }
 
-Matrix& Matrix::operator * (const double scalar)
+Matrix Matrix::operator * (const double scalar)
 {
+	Matrix res(m, n);
+	res.Reset();
+
 	for (int i = 0; i < this->m; i++) {
 		for (int j = 0; j < this->n; j++) {
-			this->data[i][j] *= scalar;
+			res.data[i][j] = data[i][j] * scalar;
 		}
 	}
-	return *this;
+	return res;
 }
 
-Matrix& operator * (const double scalar, Matrix& Matrix)
+Matrix operator * (const double scalar, Matrix& Matrix)
 {
 	return Matrix * scalar;
 }
 
-Matrix& Matrix::operator / (const int scalar) {
+Matrix Matrix::operator / (const double scalar) 
+{
+	Matrix res(m, n);
+	res.Reset();
 	if (scalar == 0) throw Divizion_By_Zero();
 	for (int i = 0; i < this->m; i++) {
 		for (int j = 0; j < this->n; j++) {
-			this->data[i][j] /= scalar;
+			res.data[i][j] = data[i][j] / scalar;
 		}
 	}
-	return *this;
+	return res;
 }
 
 double Matrix::Ñalculating_trace_matrix()
@@ -232,21 +238,27 @@ double Matrix::Ñalculating_trace_matrix()
 	return trace;
 }
 
-Matrix& Matrix::Transposition()
-{
-	if (data == NULL) throw Empty();
-	Matrix res(n, m);
-	res.Reset();
 
+Matrix  Matrix::Transpose()
+{
+	Matrix Transposed(m, n);
 	for (int i = 0; i < m; ++i)
 	{
-		for (int j = i; j < n; ++j)
+		for (int j = 0; j < n; ++j)
 		{
-			res.data[i][j] = data[j][i];
+			Transposed.data[i][j] = data[j][i];
 		}
+		cout << '\n';
 	}
-	return res;
-
+	for (int i = 0; i < m; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+		{
+			cout << Transposed.data[i][j]<< "  ";
+		}
+		cout << '\n';
+	}
+	return Transposed;
 }
 
 void Matrix::Random()
@@ -257,7 +269,7 @@ void Matrix::Random()
 			data[i][j] = 1 + rand() % 10;
 }
 
-Matrix Matrix::Pre_Minor(int row, int col) const
+double Matrix::Pre_Minor(int row, int col) const
 {
 	if (n != m) throw Different_Dimensions();
 	Matrix New_Matrix(m - 1, n -1);
@@ -273,40 +285,60 @@ Matrix Matrix::Pre_Minor(int row, int col) const
 			in++;
 		}
 	}
-	return New_Matrix;
+
+	double ans = New_Matrix.Determinant();
+
+	return ans;
 }
 
 double Matrix::Determinant() const
 {
-	double determ = 0;
-	if (m == 1) {
-		return (*this)(0, 0);
-	}
-	for (int i = 0; i < m; i++) {
-		double a = (*this)(0, i) * (i % 2 ? -1 : 1);
-		determ += a * this->Pre_Minor(0, i).Determinant();
-	}
-	return determ;
-}
-
-Matrix Matrix::Allied()
-{
-	if (((m - 1) <= 0) || (m != n))	throw Different_Dimensions();
-
-	Matrix New_Matrix(m, n);
-	int i, j;
-
-	for (i = 0; i < m; i++) {
-		for (j = 0; j < n; j++) {
-			New_Matrix(i, j) = this->Pre_Minor(i, j).Determinant() * ((i + j) % 2 ? -1 : 1);
+	Matrix TmpMatrix = *this;
+	double d = 0;
+	double tmp = 0;
+	for (int k = 0; k < n - 1; k++) {
+		for (int i = k + 1; i < n; i++) {
+			tmp = -TmpMatrix.data[i][k] / TmpMatrix.data[k][k];
+			for (int j = 0; j < n; j++) {
+				TmpMatrix.data[i][j] += TmpMatrix.data[k][j] * tmp;
+			}
 		}
 	}
-	return New_Matrix;
+
+	cout.precision(2);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cout.width(8);
+			cout << fixed << TmpMatrix.data[i][j] << " ";
+		}
+		cout << "\n";
+	}
+	d = 1;
+	for (int i = 0; i < n; i++) {
+		d *= TmpMatrix.data[i][i];
+	}
+
+	return d;
 }
 
-Matrix Matrix::Multiplication_by_Vector(const Matrix& Vector,  Matrix& M)
+
+Matrix Matrix::Multiplication_by_Vector(const Matrix& Vector)
 {
-	if (M.n != Vector.m) throw Different_Dimensions();
-	Matrix Mat = M.Allied();
-	return Mat * Vector;
+	if (this->n != Vector.m) throw Different_Dimensions();
+
+	Matrix Minors(n,m);
+
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			Minors.data[i][j] = pow(-1, (i + j)) * Pre_Minor(i, j);
+		}
+	}
+
+	Matrix MinorsTransposed = Minors.Transpose();
+
+	Matrix Ans = ((abs(1 / Determinant())) * MinorsTransposed) * Vector;
+
+	return Ans;
 }

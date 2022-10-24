@@ -1,4 +1,5 @@
 #include <iostream>
+#include <math.h>
 using namespace std;
 
 
@@ -44,26 +45,24 @@ public:
 
 	Matrix operator - (const Matrix& New_Matrix);
 
-	Matrix& operator * (const Matrix& New_Matrix);
+	Matrix operator * (const Matrix& New_Matrix);
 
-	Matrix& operator * (const double scalar);
+	Matrix operator * (const double scalar);
 
-	friend Matrix& operator * (const double scalar, Matrix& Matrix);
+	friend Matrix operator * (const double scalar, Matrix& Matrix);
 
-	Matrix& operator / (const int scalar);
+	Matrix operator / (const double scalar);
 
 	double Ñalculating_trace_matrix();
 
-	Matrix& Transposition();
+	Matrix  Transpose();
 	 
 	void Random();
 
-	Matrix Pre_Minor(int row, int col) const;
+	double Pre_Minor(int row, int col) const;
 
 	double Determinant() const;
 
-	Matrix Allied();
-
-	Matrix Multiplication_by_Vector(const Matrix& Vector,  Matrix& M);
+	Matrix Multiplication_by_Vector(const Matrix& Vector);
 };
 
