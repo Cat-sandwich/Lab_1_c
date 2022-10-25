@@ -63,6 +63,6 @@ public:
 
 	double Determinant() const;
 
-	Matrix Multiplication_by_Vector(const Matrix& Vector);
+	Matrix Search_Matrix_X(const Matrix& Vector);
 };
 

@@ -76,8 +76,8 @@ void menu1()
 		Print_Matrix(Many_Matrix, current, size);
 
 		cout<<"1 - Задать матрицу рандомно\n2 - Сложить две матрицы \n3 - Вычесть из одной матрицы другую"<<endl;
-		cout << "4 - Умножить одну матрицу на другую\n5 - домножить на скаляр\n6 - разделить нас скаляр" << endl;
-		cout << "7 - вычислить след матрицы\n8 - выполнить задание\n0 - Завершить работу\n" << endl;
+		cout << "4 - Умножить одну матрицу на другую\n5 - Домножить на скаляр\n6 - Разделить нас скаляр" << endl;
+		cout << "7 - Вычислить след матрицы\n8 - Выполнить задание\n0 - Завершить работу\n" << endl;
 		cout << "-> Вправо\n-< Влево\n" << endl;
 
 		double Scalar = 0;
@@ -86,45 +86,20 @@ void menu1()
 		int m = 0, n = 0;
 		switch (key)
 		{
-		case(56):
-
-			Vector = new Matrix(3, 1);
-			Vector->Random();
-
-			Add_Matrix(&size, &Many_Matrix, *Vector);
-
-
-			if (size != 0) New_matrix = Many_Matrix[current].Multiplication_by_Vector(*Vector);
-			else
-			{
-				cout << "No matrix(" << endl;
-			}
-
-			Add_Matrix(&size, &Many_Matrix, New_matrix);
-
-			break;
-		case(55):
-			if (size != 0) cout << Many_Matrix[current].Сalculating_trace_matrix() << endl;
-			else
-			{
-				cout << "No matrix(" << endl;
-			}
-			system("pause");
-			break;
 		case(49):
 
-			cout <<"\tВведите размерность матрицы:\n\n" << endl;
-			cout << "\nВведите количество столбцов:" << endl;
-			m = check();		
+			cout << "\tВведите размерность матрицы: \n" ;
+			cout << "\nВведите количество столбцов: " ;
+			m = check();
 
-			cout << "\nВведите количество строк: " << endl; 
+			cout << "Введите количество строк: " ;
 			n = check();
 			printf("Данные считаны\n ");
 			system("pause");
 
-			New_matrix = Random_Matrix(m, n);			
-			Add_Matrix( &size, &Many_Matrix, New_matrix);
-			
+			New_matrix = Random_Matrix(m, n);
+			Add_Matrix(&size, &Many_Matrix, New_matrix);
+
 			break;
 		case(50):
 			if ((size + 1) < 2)
@@ -132,16 +107,19 @@ void menu1()
 				cout << "\nУ вас должно быть хотя бы две матрицы...\n" << endl;
 				system("pause");
 				break;
-			}			
-			do
+			}
+			cout << "Введите номер матрицы, которую вы хотите сложить с текущей:\n" << endl;
+			m = check();
+			while (m > size)
 			{
-				cout << "Введите номер матрицы, которую вы хотите сложить с текущей:\n" << endl;
+				cout << "Такой матрицы нет..." << endl;
+				cout << "Попробуйте еще раз..." << endl;
 				m = check();
-				system("pause");
-			} while (m > size);
+
+			} 
 			try
 			{
-			New_matrix = Many_Matrix[current] + Many_Matrix[m - 1];
+				New_matrix = Many_Matrix[current] + Many_Matrix[m - 1];
 			}
 			catch (Exception& error)
 			{
@@ -157,12 +135,15 @@ void menu1()
 				system("pause");
 				break;
 			}
-			do
+			cout << "Введите номер матрицы, которую вы хотите вычесть:\n" << endl;
+			m = check();
+
+			while (m > size)
 			{
-				cout << "Введите номер матрицы, которую вы хотите вычесть:\n" << endl;
+				cout << "Такой матрицы нет..." << endl;
+				cout << "Попробуйте еще раз..." << endl;
 				m = check();
-				system("pause");
-			} while (m > size);
+			}
 			try
 			{
 				New_matrix = Many_Matrix[current] - Many_Matrix[m - 1];
@@ -173,7 +154,7 @@ void menu1()
 				system("pause");
 			}
 			Add_Matrix(&size, &Many_Matrix, New_matrix);
-			
+
 			break;
 		case(52):
 			if ((size + 1) < 2)
@@ -200,22 +181,88 @@ void menu1()
 			Add_Matrix(&size, &Many_Matrix, New_matrix);
 
 			break;
-		case(54):
-			system("cls");
-			cout << "Введите скаляр(число с плавающей точкой):" << endl;
-			cin >> Scalar;
-			New_matrix = Many_Matrix[current] / Scalar;
-			Add_Matrix(&size, &Many_Matrix, New_matrix);
-			system("pause");
-			break;
+
 		case(53):
-			system("cls");
-			cout << "Введите скаляр(число с плавающей точкой):" << endl;
+			if (size == 0)
+			{
+				cout << "\nУ вас должна быть хотя бы одна матрица...\n" << endl;
+				system("pause");
+				break;
+			}
+			cout << "Введите число:" << endl;
 			cin >> Scalar;
 			New_matrix = Many_Matrix[current] * Scalar;
 			Add_Matrix(&size, &Many_Matrix, New_matrix);
 			system("pause");
 			break;
+		case(54):
+			if (size == 0)
+			{
+				cout << "\nУ вас должна быть хотя бы одна матрица...\n" << endl;
+				system("pause");
+				break;
+			}
+			cout << "Введите число:" << endl;
+			cin >> Scalar;
+			try
+			{
+				New_matrix = Many_Matrix[current] / Scalar;
+
+				Add_Matrix(&size, &Many_Matrix, New_matrix);
+			}
+			catch (Exception& Error)
+			{
+				Error.print();
+				system("pause");
+			}
+
+			
+			break;
+		
+		case(55):
+			if (size == 0)
+			{
+				cout << "\nУ вас должна быть хотя бы одна матрица...\n" << endl;
+				system("pause");
+				break;
+			}
+			
+			cout <<"След матрицы = " << Many_Matrix[current].Сalculating_trace_matrix() << endl;
+			system("pause");
+			break;
+			
+		case(56):
+			if (size == 0)
+			{
+				cout << "\nУ вас должна быть хотя бы одна матрица...\n" << endl;
+				system("pause");
+				break;
+			}
+			if ((Many_Matrix[current].Get_m() == Many_Matrix[current].Get_n()) && (Many_Matrix[current].Get_m() == 3))
+			{
+				cout << "\nВыберите матрицу с размером три на три...\n" << endl;
+				system("pause");
+				break;
+			}
+
+			Vector = new Matrix(3, 1);
+			Vector->Random();
+
+			Add_Matrix(&size, &Many_Matrix, *Vector);
+			try
+			{
+				New_matrix = Many_Matrix[current].Search_Matrix_X(*Vector);
+				Add_Matrix(&size, &Many_Matrix, New_matrix);
+			}
+			catch (Exception& Error)
+			{
+				Error.print();
+				system("pause");
+			}
+						
+
+			break;
+		
 		case(48):
 			system("cls");
 

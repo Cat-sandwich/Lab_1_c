@@ -322,7 +322,7 @@ double Matrix::Determinant() const
 }
 
 
-Matrix Matrix::Multiplication_by_Vector(const Matrix& Vector)
+Matrix Matrix::Search_Matrix_X(const Matrix& Vector)
 {
 	if (this->n != Vector.m) throw Different_Dimensions();
 
