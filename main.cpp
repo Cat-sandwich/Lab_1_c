@@ -25,15 +25,15 @@ int check()
 	return number;
 }
 
- 
-Matrix Random_Matrix(int m, int n)
+template <class T>
+Matrix<T> Random_Matrix(int m, int n)
 {
-	Matrix New_matrix(m, n);
+	Matrix<T> New_matrix(m, n);
 	New_matrix.Random();
 	return  New_matrix;
 }
-
-void Add_Matrix(int* size, Matrix ** Many_Matrix, Matrix New_matrix )
+template <class T>
+void Add_Matrix(int* size, Matrix<T> ** Many_Matrix, Matrix<T> New_matrix )
 {
 	*size += 1;
 	Matrix* tmp = new Matrix[*size];
@@ -47,7 +47,8 @@ void Add_Matrix(int* size, Matrix ** Many_Matrix, Matrix New_matrix )
 	*Many_Matrix = tmp;
 	
 }
-void Print_Matrix(Matrix* Many_Matrix, int current, int size)
+template <class T>
+void Print_Matrix(Matrix<T>* Many_Matrix, int current, int size)
 {
 	
 	if (Many_Matrix == NULL) cout << "Матриц нет(\n\n";
@@ -60,13 +61,14 @@ int get_key()
 	if ((key == 0) || (key == 224)) key = _getch();
 	return key;
 }
+template <class T>
 void menu1()
 {
 	int key = 0;	
 	bool menu1 = true;
-	Matrix* Many_Matrix = NULL;
-	Matrix New_matrix;
-	Matrix* Vector = NULL;
+	Matrix<T>* Many_Matrix = NULL;
+	Matrix<T> New_matrix;
+	Matrix<T>* Vector = NULL;
 	int current = 0, size = 0;
 	while (menu1)
 	{
@@ -96,7 +98,7 @@ void menu1()
 			n = check();
 			printf("Данные считаны\n ");
 			system("pause");
-
+			
 			New_matrix = Random_Matrix(m, n);
 			Add_Matrix(&size, &Many_Matrix, New_matrix);
 
@@ -226,9 +228,16 @@ void menu1()
 				system("pause");
 				break;
 			}
-			
-			cout <<"След матрицы = " << Many_Matrix[current].Сalculating_trace_matrix() << endl;
-			system("pause");
+			try
+			{
+				cout <<"След матрицы = " << Many_Matrix[current].Сalculating_trace_matrix() << endl;
+				system("pause");
+			}
+			catch (Exception& Error)
+			{
+				Error.print();
+				system("pause");
+			}
 			break;
 			
 		case(56):
@@ -238,14 +247,14 @@ void menu1()
 				system("pause");
 				break;
 			}
-			if ((Many_Matrix[current].Get_m() == Many_Matrix[current].Get_n()) && (Many_Matrix[current].Get_m() == 3))
+			if ((Many_Matrix[current].Get_m() == Many_Matrix[current].Get_n()) && (Many_Matrix[current].Get_m() != 3))
 			{
 				cout << "\nВыберите матрицу с размером три на три...\n" << endl;
 				system("pause");
 				break;
 			}
 
-			Vector = new Matrix(3, 1);
+			Vector = new Matrix<int>(3, 1);
 			Vector->Random();
 
 			Add_Matrix(&size, &Many_Matrix, *Vector);

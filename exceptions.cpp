@@ -6,21 +6,14 @@ using namespace std;
 
 Exception::Exception() {}
 
-Invalid_Index::Invalid_Index(int i, int j, int m ,int n)
-{
-	this->i = i;
-	this->j = j;
-	this->m = m;
-	this->n = n;
-
-}
+Invalid_Index::Invalid_Index(){}
 
 void Invalid_Index::print() const {
-	cout << "Произошла ошибка: индекс " << i << j << " не найден" << endl;
+	cout << "Произошла ошибка: индекс не найден" << endl;
 }
 
 
-Empty::Empty() {}
+Empty::Empty(){}
 
 void Empty::print() const 
 {
@@ -45,5 +38,5 @@ Dimensions_Incorrect::Dimensions_Incorrect() {}
 
 void Dimensions_Incorrect::print() const
 {
-	cout << "Произошла ошибка: невозможно задать такую размерность матрицы" << endl;
+	cout << "Произошла ошибка: матрица должна быть квадратной" << endl;
 }

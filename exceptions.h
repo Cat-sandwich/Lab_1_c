@@ -9,10 +9,8 @@ public:
 };
 class Invalid_Index : public Exception
 {
-private:
-	int i, j, n, m;
 public:
-	Invalid_Index(int i, int j, int m, int n);
+	Invalid_Index();
 	void print() const override;
 };
 
