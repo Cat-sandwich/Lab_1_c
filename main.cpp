@@ -36,7 +36,7 @@ template <class T>
 void Add_Matrix(int* size, Matrix<T> ** Many_Matrix, Matrix<T> New_matrix )
 {
 	*size += 1;
-	Matrix* tmp = new Matrix[*size];
+	Matrix<T>* tmp = new Matrix<T>[*size];
 	if(*size-1 != 0)
 	{
 		for (int i = 0; i < (* size) - 1; i++)
@@ -75,7 +75,7 @@ void menu1()
 		
 		system("cls");
 		cout << "\tМОИ МАТРИЦЫ\n" << endl;
-		Print_Matrix(Many_Matrix, current, size);
+		Print_Matrix<T>(Many_Matrix, current, size);
 
 		cout<<"1 - Задать матрицу рандомно\n2 - Сложить две матрицы \n3 - Вычесть из одной матрицы другую"<<endl;
 		cout << "4 - Умножить одну матрицу на другую\n5 - Домножить на скаляр\n6 - Разделить нас скаляр" << endl;
@@ -99,8 +99,8 @@ void menu1()
 			printf("Данные считаны\n ");
 			system("pause");
 			
-			New_matrix = Random_Matrix(m, n);
-			Add_Matrix(&size, &Many_Matrix, New_matrix);
+			New_matrix = Random_Matrix<T>(m, n);
+			Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
 
 			break;
 		case(50):
@@ -128,7 +128,7 @@ void menu1()
 				error.print();
 				system("pause");
 			}
-			Add_Matrix(&size, &Many_Matrix, New_matrix);
+			Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
 			break;
 		case(51):
 			if ((size + 1) < 2)
@@ -155,7 +155,7 @@ void menu1()
 				error.print();
 				system("pause");
 			}
-			Add_Matrix(&size, &Many_Matrix, New_matrix);
+			Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
 
 			break;
 		case(52):
@@ -180,7 +180,7 @@ void menu1()
 				error.print();
 				system("pause");
 			}
-			Add_Matrix(&size, &Many_Matrix, New_matrix);
+			Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
 
 			break;
 
@@ -194,7 +194,7 @@ void menu1()
 			cout << "Введите число:" << endl;
 			cin >> Scalar;
 			New_matrix = Many_Matrix[current] * Scalar;
-			Add_Matrix(&size, &Many_Matrix, New_matrix);
+			Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
 			system("pause");
 			break;
 		case(54):
@@ -210,7 +210,7 @@ void menu1()
 			{
 				New_matrix = Many_Matrix[current] / Scalar;
 
-				Add_Matrix(&size, &Many_Matrix, New_matrix);
+				Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
 			}
 			catch (Exception& Error)
 			{
@@ -257,11 +257,11 @@ void menu1()
 			Vector = new Matrix<int>(3, 1);
 			Vector->Random();
 
-			Add_Matrix(&size, &Many_Matrix, *Vector);
+			Add_Matrix<T>(&size, &Many_Matrix, *Vector);
 			try
 			{
 				New_matrix = Many_Matrix[current].Search_Matrix_X(*Vector);
-				Add_Matrix(&size, &Many_Matrix, New_matrix);
+				Add_Matrix<T>(&size, &Many_Matrix, New_matrix);
 			}
 			catch (Exception& Error)
 			{
@@ -298,7 +298,8 @@ int main()
 	
 	cout << "Здравствуйте! Вас приветствует программа \"МНОГО МАТРИЦ\"\n" << endl;
 	system("pause");
-	menu1();
+	menu1<int>();
+	
 	system("pause");
 	return 0;
 }

@@ -12,11 +12,11 @@ private:
 public:
 	Matrix();
 
-	Matrix<T>(int m, int n);
+	Matrix(int m, int n);
 
-	Matrix<T>(int m, int n, const T& value); // TODO+
+	Matrix(int m, int n, const T& value); // TODO+
 
-	Matrix<T>(const Matrix& Matrix);
+	Matrix(const Matrix& Matrix);
 
 	void Set_m(int m = 1);
 
@@ -50,11 +50,15 @@ public:
 
 	Matrix operator * (const Matrix& New_Matrix);
 
-	Matrix operator * (const T scalar);
+	Matrix operator * (const T& scalar);
 
-	friend Matrix operator * (const T scalar, Matrix& Matrix); 
 
-	Matrix operator / (const T scalar);
+	friend Matrix operator * (const T& scalar, Matrix& Matrix)
+	{
+		return Matrix * scalar;
+	}
+
+	Matrix operator / (const T& scalar);
 
 	T Ñalculating_trace_matrix();
 
@@ -62,9 +66,11 @@ public:
 	 
 	void Random();
 
-	Matrix& Pre_Minor(int row, int col) const;
+	Matrix Pre_Minor(int row, int col) const;
 
-	T Determinant() const;
+	/*T Determinant() const;*/
+
+	T NDeterminant(int size);
 
 	Matrix Search_Matrix_X(const Matrix& Vector);
 

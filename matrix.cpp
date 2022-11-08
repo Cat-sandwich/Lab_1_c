@@ -3,20 +3,28 @@
 #include "exceptions.h"
 #include <iostream>
 #include <random>
+#include <complex>
 using namespace std;
 
 template <class T>
+Matrix<T>::Matrix()
+{
+	m = 0;
+	n = 0;
+	data = NULL;
 
+}
 
+template <class T>
 Matrix<T>::Matrix(int m, int n)
 {
 	this->m = m;
 	this->n = n;
 
-	data = (double**) new double* [m];
+	data = (T**) new T* [m];
 
 	for (int i = 0; i < m; i++)
-		data[i] = (double*) new double[n];
+		data[i] = (T*) new T[n];
 
 }
 
@@ -25,10 +33,10 @@ Matrix<T>::Matrix(int m, int n, const T& value)
 {
 	Set_m(m);
 	Set_n(n);
-	data = (double**) new double* [m];
+	data = (T**) new T* [m];
 
 	for (int i = 0; i < m; i++)
-		data[i] = (double*) new double[n];
+		data[i] = (T*) new T[n];
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
@@ -120,9 +128,9 @@ Matrix<T>& Matrix<T>::operator = (const Matrix<T>& Matrix) //ToDO+
 	m = Matrix.m;
 	n = Matrix.n;
 
-	data = (double**) new double* [m];
+	data = (T**) new T* [m];
 	for (int i = 0; i < m; i++)
-		data[i] = (double*) new double[n];
+		data[i] = (T*) new T[n];
 
 	for (int i = 0; i < m; i++)
  		for (int j = 0; j < n; j++)
@@ -160,7 +168,7 @@ Matrix<T>& Matrix<T>::operator () (int m, int n, int value)
 template <class T>
 Matrix<T> Matrix<T>::operator + (const Matrix<T>& New_Matrix) {
 	if (this->m != New_Matrix.m || this->n != New_Matrix.n) throw Different_Dimensions();
-	Matrix res(m, n);
+	Matrix<T> res(m, n);
 	for (int i = 0; i < this->m; i++) {
 		for (int j = 0; j < n; j++) {
 			res.data[i][j] = this->data[i][j] + New_Matrix.data[i][j];
@@ -173,7 +181,7 @@ template <class T>
 Matrix<T> Matrix<T>::operator - (const Matrix<T>& New_Matrix) {
 	if (this->m != New_Matrix.m || this->n != New_Matrix.n) throw Different_Dimensions();
 
-	Matrix res(m, n);
+	Matrix<T> res(m, n);
 	for (int i = 0; i < this->m; i++) {
 		for (int j = 0; j < n; j++) {
 			res.data[i][j] = this->data[i][j] - New_Matrix.data[i][j];
@@ -187,7 +195,7 @@ Matrix<T> Matrix<T>::operator * (const Matrix<T>& New_Matrix)
 {
 	if (n != New_Matrix.m) throw Different_Dimensions();
 
-	Matrix res(m, New_Matrix.n);
+	Matrix<T> res(m, New_Matrix.n);
 
 	for (int i = 0; i < res.m; ++i)
 		for (int j = 0; j < res.n; ++j)
@@ -197,27 +205,30 @@ Matrix<T> Matrix<T>::operator * (const Matrix<T>& New_Matrix)
 	return res;
 }
 template <class T>
-Matrix<T> Matrix<T>::operator * (const T scalar)
+Matrix<T> Matrix<T>::operator * (const T& scalar)
 {
-	Matrix res(m, n);
+	Matrix<T> res(m, n);
 
-	for (int i = 0; i < this->m; i++) {
-		for (int j = 0; j < this->n; j++) {
+	for (int i = 0; i < this->m; i++) 
+	{
+		for (int j = 0; j < this->n; j++)
+		{
 			res.data[i][j] = data[i][j] * scalar;
 		}
 	}
 	return res;
 }
-template <class T>
-Matrix<T> operator * (const T scalar, Matrix<T>& Matrix)
+/*template <class T>
+Matrix<T> operator * (const T& scalar, Matrix<T>& Matrix)
 {
 	return Matrix * scalar;
 }
+*/
 template <class T>
-Matrix<T> Matrix<T>::operator / (const T scalar)
+Matrix<T> Matrix<T>::operator / (const T& scalar)
 {
-	Matrix res(m, n);
-	if (scalar == 0) throw Divizion_By_Zero();
+	Matrix<T> res(m, n);
+	if (scalar == T(0)) throw Divizion_By_Zero();
 	for (int i = 0; i < this->m; i++) {
 		for (int j = 0; j < this->n; j++) {
 			res.data[i][j] = data[i][j] / scalar;
@@ -243,7 +254,7 @@ T Matrix<T>::Сalculating_trace_matrix()
 template <class T>
 Matrix<T> Matrix<T>::Transpose()
 {
-	Matrix Transposed(m, n);
+	Matrix<T> Transposed(m, n);
 	for (int i = 0; i < m; ++i)
 	{
 		for (int j = 0; j < n; ++j)
@@ -271,15 +282,15 @@ void Matrix<T>::Random()
 			data[i][j] = 1 + rand() % 10;
 }
 template <class T>
-Matrix<T>& Matrix<T>::Pre_Minor(int row, int col) const //todo+
+Matrix<T> Matrix<T>::Pre_Minor(int row, int col) const //todo+
 {
 	if (n != m) throw Different_Dimensions();
-	Matrix New_Matrix(m - 1, n -1);
-	int i, j, in, jn;
+	Matrix<T> New_Matrix(m - 1, n -1);
+	int in, jn;
 
-	for (i = 0, in = 0; i < m; i++) {
+	for (int i = 0, in = 0; i < m; i++) {
 		if (i != row) {
-			for (j = 0, jn = 0; j < m; j++) {
+			for (int j = 0, jn = 0; j < m; j++) {
 				if (j != col) {
 					New_Matrix(in, jn++) = (*this)(i, j);
 				}
@@ -290,12 +301,46 @@ Matrix<T>& Matrix<T>::Pre_Minor(int row, int col) const //todo+
 
 	return New_Matrix;
 }
+
+template <class T>
+T Matrix<T>::NDeterminant(int size)
+{
+	if (n != m) throw Different_Dimensions();
+	
+	Matrix<T> TmpMatrix(size, size);
+	int new_size = size - 1;
+	T d = 0;
+	T k = 1; //(-1) в степени i
+	if (size < 1) cout << "Определитель вычислить невозможно!";
+	if (size == 1) {
+		d = data[0][0];
+		return(d);
+	}
+	if (size == 2)
+	{
+		d = data[0][0] * data[1][1] - data[1][0] * data[0][1];
+		return(d);
+	}
+	if (size > 2)
+	{
+		for (int i = 0; i < size; i++)
+		{
+			TmpMatrix = TmpMatrix.Pre_Minor(i, 0);
+						
+			d += k * data[i][0] * TmpMatrix.NDeterminant(new_size);
+			k = -k;
+		}
+	}
+	return(d);
+}
+/*
 template <class T>
 T Matrix<T>::Determinant() const // todo
 {
-	Matrix TmpMatrix = *this;
+	if (n != m) throw Dimensions_Incorrect()
+	Matrix<> TmpMatrix = *this;
 	double d = 0;
-	double tmp = 0;
+	T tmp = 0;
 	for (int k = 0; k < n - 1; k++) {
 		for (int i = k + 1; i < n; i++) {
 			tmp = -TmpMatrix.data[i][k] / TmpMatrix.data[k][k];
@@ -305,14 +350,6 @@ T Matrix<T>::Determinant() const // todo
 		}
 	}
 
-	cout.precision(2);
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			cout.width(8);
-			cout << fixed << TmpMatrix.data[i][j] << " ";
-		}
-		cout << "\n";
-	}
 	d = 1;
 	for (int i = 0; i < n; i++) {
 		d *= TmpMatrix.data[i][i];
@@ -320,25 +357,26 @@ T Matrix<T>::Determinant() const // todo
 
 	return d;
 }
+*/
 
 template <class T>
-Matrix<T> Matrix<T>::Search_Matrix_X(const Matrix& Vector)
+Matrix<T> Matrix<T>::Search_Matrix_X(const Matrix<T>& Vector)
 {
 	if (this->n != Vector.m) throw Different_Dimensions();
 
-	Matrix Minors(n,m);
+	Matrix<T> Minors(n,m);
 
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < m; j++)
 		{
-			Minors.data[i][j] = pow(-1, (i + j)) * Pre_Minor(i, j).Determinant();
+			Minors.data[i][j] = T(pow(-1, (i + j))) * Pre_Minor(i, j).NDeterminant(m);
 		}
 	}
 
-	Matrix MinorsTransposed = Minors.Transpose();
+	Matrix<T> MinorsTransposed = Minors.Transpose();
 
-	Matrix Ans = ((abs(1 / Determinant())) * MinorsTransposed) * Vector;
+	Matrix<T> Ans = ((abs(T(1) / NDeterminant(m))) * MinorsTransposed) * Vector;
 
 	return Ans;
 }
@@ -353,3 +391,9 @@ ostream& operator << (ostream& os, const Matrix<T>& New_Matrix)
 	}
 	return os;
 }
+
+template class Matrix<int>;
+template class Matrix<float>;
+template class Matrix<double>;
+template class Matrix<complex<float>>;
+template class Matrix<complex<double>>;
