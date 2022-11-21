@@ -2,11 +2,10 @@
 #include <math.h>
 using namespace std;
 
-template <class T>
 class Matrix
 {
 private:
-	T** data;
+	double** data;
 	int m, n;
 
 public:
@@ -14,7 +13,7 @@ public:
 
 	Matrix(int m, int n);
 
-	Matrix(int m, int n, const T& value); // TODO+
+	Matrix(int m, int n, const double& value); // TODO+
 
 	Matrix(const Matrix& Matrix);
 
@@ -26,11 +25,11 @@ public:
 
 	int Get_n();
 
-	void Set_Data(const T& value); // TODO+
+	void Set_Data(const double& value); // TODO+
 
-	T Get_Data(int i, int j) const;
+	double Get_Data(int i, int j) const;
 
-	void Set_Data_Value(int i, int j, T value);
+	void Set_Data_Value(int i, int j, double value);
 
 	void Print(const int& Number_Matrix);
 
@@ -40,7 +39,7 @@ public:
 
 	~Matrix();
 
-	T& operator () (int m, int n) const;
+	double& operator () (int m, int n) const;
 
 	Matrix& operator () (int m, int n, int new_value);
 
@@ -50,17 +49,17 @@ public:
 
 	Matrix operator * (const Matrix& New_Matrix);
 
-	Matrix operator * (const T& scalar);
+	Matrix operator * (const double& scalar);
 
 
-	friend Matrix operator * (const T& scalar, Matrix& Matrix)
+	friend Matrix operator * (const double& scalar, Matrix& Matrix)
 	{
 		return Matrix * scalar;
 	}
 
-	Matrix operator / (const T& scalar);
+	Matrix operator / (const double& scalar);
 
-	T Ñalculating_trace_matrix();
+	double Ñalculating_trace_matrix();
 
 	Matrix  Transpose();
 	 
@@ -70,7 +69,7 @@ public:
 
 	/*T Determinant() const;*/
 
-	T NDeterminant(int size);
+	double NDeterminant(int size);
 
 	Matrix Search_Matrix_X(const Matrix& Vector);
 
