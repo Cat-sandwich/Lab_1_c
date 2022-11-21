@@ -35,6 +35,13 @@ public:
 	void print() const override;
 };
 
+class Zero_Determinant : public Exception
+{
+public:
+	Zero_Determinant();
+	void print() const override;
+};
+
 class Dimensions_Incorrect : public Exception
 {
 public:

@@ -29,19 +29,19 @@ public:
 
 	double Get_Data(int i, int j) const;
 
-	void Set_Data_Value(int i, int j, double value);
+	void Set_Data_Value(int i, int j,const double& value);
 
 	void Print(const int& Number_Matrix);
 
 	void Reset();
 
-	Matrix& operator = (const Matrix& Matrix);
+	Matrix& operator = (const Matrix& M);
 
 	~Matrix();
 
 	double& operator () (int m, int n) const;
 
-	Matrix& operator () (int m, int n, int new_value);
+	Matrix& operator () (int m, int n, const double& value);
 
 	Matrix operator + (const Matrix& New_Matrix);
 

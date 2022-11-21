@@ -34,6 +34,13 @@ void Divizion_By_Zero::print() const
 	cout << "Произошла ошибка: деление матрицы на ноль" << endl;
 }
 
+Zero_Determinant::Zero_Determinant() {}
+
+void Zero_Determinant::print() const
+{
+	cout << "Произошла ошибка: деление матрицы на нулевой определитель" << endl;
+}
+
 Dimensions_Incorrect::Dimensions_Incorrect() {}
 
 void Dimensions_Incorrect::print() const

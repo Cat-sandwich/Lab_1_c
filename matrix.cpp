@@ -97,7 +97,7 @@ double Matrix::Get_Data(int i, int j) const //todo+
 	
 }
 
-void Matrix::Set_Data_Value(int i, int j, double value)
+void Matrix::Set_Data_Value(int i, int j,const double& value)
 {
 	if ((m <= i) && (n <= j)) throw Invalid_Index();
 	data[i][j] = value;
@@ -123,10 +123,25 @@ void Matrix::Reset()
 			data[i][j] = 0;
 }
 
-Matrix& Matrix::operator = (const Matrix& Matrix) //ToDO+
+Matrix& Matrix::operator = (const Matrix& M) //ToDO+
 {
-	m = Matrix.m;
-	n = Matrix.n;
+	if ((m == M.m) && (n == M.n))
+	{
+		for (int i = 0; i < m; i++)
+			for (int j = 0; j < n; j++)
+				data[i][j] = M.data[i][j];
+		return *this;
+	}
+	if ((m < M.m) || (n < M.n))
+	{
+		for (int i = 0; i < m; i++)
+			delete[] data[i];
+
+		delete[] data;
+
+	}
+	m = M.m;
+	n = M.n;
 
 
 	data = (double**) new double* [m];
@@ -136,7 +151,7 @@ Matrix& Matrix::operator = (const Matrix& Matrix) //ToDO+
 
 	for (int i = 0; i < m; i++)
  		for (int j = 0; j < n; j++)
-			data[i][j] = Matrix.data[i][j];
+			data[i][j] = M.data[i][j];
 	return *this;
 }
 
@@ -159,10 +174,10 @@ double& Matrix::operator ()(int m, int n) const
 	return   data[m][n];
 }
 
-Matrix& Matrix::operator () (int m, int n, int value)
+Matrix& Matrix::operator () (int m, int n,const double& value)
 {
-	Matrix M(m, n, value);
-	*this = M;
+	if ((m > this->m) || (n > this->n)) throw Invalid_Index();
+	data[m][n] = value;
 	return *this;
 
 }
@@ -200,9 +215,12 @@ Matrix Matrix::operator * (const Matrix& New_Matrix)
 
 	for (int i = 0; i < res.m; ++i)
 		for (int j = 0; j < res.n; ++j)
+		{
+			res.data[i][j] = 0;
 			for (int k = 0; k < m; ++k)
-				res.data[i][j] = data[i][k] * New_Matrix.data[k][j];
 
+				res.data[i][j] += data[i][k] * New_Matrix.data[k][j];
+		}
 	return res;
 }
 
@@ -249,23 +267,17 @@ double Matrix::Сalculating_trace_matrix()
 
 Matrix Matrix::Transpose()
 {
-	Matrix Transposed(m, n);
+	Matrix Transposed(m,n);
 	for (int i = 0; i < m; ++i)
 	{
-		for (int j = 0; j < n; ++j)
+		for (int j = i; j < n; ++j)
 		{
 			Transposed.data[i][j] = data[j][i];
+			Transposed.data[j][i] = data[i][j];
 		}
 		cout << '\n';
 	}
-	for (int i = 0; i < m; ++i)
-	{
-		for (int j = 0; j < n; ++j)
-		{
-			cout << Transposed.data[i][j]<< "  ";
-		}
-		cout << '\n';
-	}
+	
 	return Transposed;
 }
 
@@ -281,97 +293,88 @@ Matrix Matrix::Pre_Minor(int row, int col) const //todo+
 {
 	if (n != m) throw Different_Dimensions();
 	Matrix New_Matrix(m - 1, n -1);
-	int in, jn;
+	int in = 0, jn = 0;
 
-	for (int i = 0, in = 0; i < m; i++) {
-		if (i != row) {
-			for (int j = 0, jn = 0; j < m; j++) {
+	for (int i = 0; i < m; i++) 
+	{
+		if (i != row) 
+		{
+			jn = 0;
+			for (int j = 0; j < m; j++) {
 				if (j != col) {
-					New_Matrix(in, jn++) = (*this)(i, j);
+					New_Matrix.data[in][jn] = data[i][j];
+					jn++;
 				}
 			}
 			in++;
 		}
 	}
-
+	
 	return New_Matrix;
 }
 
 double Matrix::NDeterminant(int size)
 {
 	if (n != m) throw Different_Dimensions();
-	
-	Matrix TmpMatrix(size, size);
+	Matrix TmpMatrix(m, m);
 	int new_size = size - 1;
 	double d = 0;
 	int k = 1; //(-1) в степени i
 	if (size < 1) cout << "Определитель вычислить невозможно!";
-	if (size == 1) {
+	if (m == 1)
+	{
 		d = data[0][0];
 		return(d);
 	}
-	if (size == 2)
+	if (m == 2)
 	{
 		d = data[0][0] * data[1][1] - data[1][0] * data[0][1];
 		return(d);
 	}
-	if (size > 2)
+	if (m > 2)
 	{
+
+		
 		for (int i = 0; i < size; i++)
 		{
-			TmpMatrix = TmpMatrix.Pre_Minor(i, 0);
+
+			TmpMatrix = (* this).Pre_Minor(i, 0);
 						
 			d += k * data[i][0] * TmpMatrix.NDeterminant(new_size);
 			k = -k;
 		}
+		
 	}
+	
 	return(d);
 }
-/*
-template <class T>
-T Matrix<T>::Determinant() const // todo
-{
-	if (n != m) throw Dimensions_Incorrect()
-	Matrix<> TmpMatrix = *this;
-	double d = 0;
-	T tmp = 0;
-	for (int k = 0; k < n - 1; k++) {
-		for (int i = k + 1; i < n; i++) {
-			tmp = -TmpMatrix.data[i][k] / TmpMatrix.data[k][k];
-			for (int j = 0; j < n; j++) {
-				TmpMatrix.data[i][j] += TmpMatrix.data[k][j] * tmp;
-			}
-		}
-	}
 
-	d = 1;
-	for (int i = 0; i < n; i++) {
-		d *= TmpMatrix.data[i][i];
-	}
-
-	return d;
-}
-*/
 
 
 Matrix Matrix::Search_Matrix_X(const Matrix& Vector)
 {
 	if (this->n != Vector.m) throw Different_Dimensions();
 
+	double det = (*this).NDeterminant(m);
+	if (det == 0) throw Zero_Determinant();
+
+	cout << det<< endl;
 	Matrix Minors(n,m);
 
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < m; j++)
 		{
-			Minors.data[i][j] = (pow(-1, (i + j))) * Pre_Minor(i, j).NDeterminant(m);
+			Minors.data[i][j] = (pow(-1, (i + j))) * Pre_Minor(i, j).NDeterminant(m-1);
 		}
 	}
+	cout << Minors << endl;
+	
+	Matrix Minors_Transpose = Minors.Transpose();
+	cout << Minors_Transpose << endl;
+	Matrix Ans = ((1 / det) * Minors_Transpose) * Vector;
 
-	Matrix MinorsTransposed = Minors.Transpose();
-
-	Matrix Ans = ((abs((1) / NDeterminant(m))) * MinorsTransposed) * Vector;
-
+	
 	return Ans;
 }
 
