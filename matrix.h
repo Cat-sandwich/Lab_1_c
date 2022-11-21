@@ -29,11 +29,7 @@ public:
 
 	double Get_Data(int i, int j) const;
 
-	void Set_Data_Value(int i, int j,const double& value);
-
 	void Print(const int& Number_Matrix);
-
-	void Reset();
 
 	Matrix& operator = (const Matrix& M);
 
@@ -66,8 +62,6 @@ public:
 	void Random();
 
 	Matrix Pre_Minor(int row, int col) const;
-
-	/*T Determinant() const;*/
 
 	double NDeterminant(int size);
 

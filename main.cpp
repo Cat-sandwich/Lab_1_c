@@ -112,7 +112,7 @@ void menu1()
 		Print_Matrix(Many_Matrix, current, size);
 
 		cout << "1 - Задать матрицу рандомно\n2 - Сложить две матрицы \n3 - Вычесть из одной матрицы другую" << endl;
-		cout << "4 - Умножить одну матрицу на другую\n5 - Домножить на скаляр\n6 - Разделить нас скаляр" << endl;
+		cout << "4 - Умножить одну матрицу на другую\n5 - Домножить на скаляр\n6 - Разделить на скаляр" << endl;
 		cout << "7 - Вычислить след матрицы\n8 - Выполнить задание" << endl;
 		cout << "9 - Изменить одно значение в текущей матрице\n0 - Завершить работу" << endl;
 		cout << "\"+\" - Задать матрицу с определенным числом" << endl;
@@ -229,8 +229,8 @@ void menu1()
 				system("pause");
 				break;
 			}
-			cout << "Введите число:" << endl;
-			cin >> Scalar;
+			cout << "Введите число: " ;
+			Scalar = Check_Double();
 			New_matrix = Many_Matrix[current] * Scalar;
 			Add_Matrix(&size, &Many_Matrix, New_matrix);
 			system("pause");
@@ -244,7 +244,7 @@ void menu1()
 				break;
 			}
 			cout << "Введите число:" << endl;
-			cin >> Scalar;
+			Scalar = Check_Double();
 			try
 			{
 				New_matrix = Many_Matrix[current] / Scalar;
@@ -345,7 +345,7 @@ void menu1()
 			cout << "Введите количество строк: ";
 			n = Check_Int();
 
-			cout << "\tВведите число, которым будет заполнена вся матрица:";
+			cout << "Введите число, которым будет заполнена вся матрица:";
 			value = Check_Double();
 			New_matrix =  Matrix(m, n, value);			
 			Add_Matrix(&size, &Many_Matrix, New_matrix);

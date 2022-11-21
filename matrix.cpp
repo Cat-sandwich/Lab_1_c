@@ -97,11 +97,6 @@ double Matrix::Get_Data(int i, int j) const //todo+
 	
 }
 
-void Matrix::Set_Data_Value(int i, int j,const double& value)
-{
-	if ((m <= i) && (n <= j)) throw Invalid_Index();
-	data[i][j] = value;
-}
 
 
 void Matrix::Print(const int& Number_Matrix)
@@ -116,12 +111,6 @@ void Matrix::Print(const int& Number_Matrix)
 	}
 }
 
-void Matrix::Reset()
-{
-	for (int i = 0; i < m; ++i)
-		for (int j = 0; j < n; ++j)
-			data[i][j] = 0;
-}
 
 Matrix& Matrix::operator = (const Matrix& M) //ToDO+
 {
@@ -184,7 +173,7 @@ Matrix& Matrix::operator () (int m, int n,const double& value)
 
 Matrix Matrix::operator + (const Matrix& New_Matrix) {
 	if (this->m != New_Matrix.m || this->n != New_Matrix.n) throw Different_Dimensions();
-	Matrix res(m, n);
+	Matrix res(m, n, 0);
 	for (int i = 0; i < this->m; i++) {
 		for (int j = 0; j < n; j++) {
 			res.data[i][j] = this->data[i][j] + New_Matrix.data[i][j];
@@ -197,7 +186,7 @@ Matrix Matrix::operator + (const Matrix& New_Matrix) {
 Matrix Matrix::operator - (const Matrix& New_Matrix) {
 	if (this->m != New_Matrix.m || this->n != New_Matrix.n) throw Different_Dimensions();
 
-	Matrix res(m, n);
+	Matrix res(m, n, 0);
 	for (int i = 0; i < this->m; i++) {
 		for (int j = 0; j < n; j++) {
 			res.data[i][j] = this->data[i][j] - New_Matrix.data[i][j];
@@ -211,12 +200,12 @@ Matrix Matrix::operator * (const Matrix& New_Matrix)
 {
 	if (n != New_Matrix.m) throw Different_Dimensions();
 
-	Matrix res(m, New_Matrix.n);
+	Matrix res(m, New_Matrix.n, 0);
 
 	for (int i = 0; i < res.m; ++i)
 		for (int j = 0; j < res.n; ++j)
 		{
-			res.data[i][j] = 0;
+			
 			for (int k = 0; k < m; ++k)
 
 				res.data[i][j] += data[i][k] * New_Matrix.data[k][j];
@@ -226,7 +215,7 @@ Matrix Matrix::operator * (const Matrix& New_Matrix)
 
 Matrix Matrix::operator * (const double& scalar)
 {
-	Matrix res(m, n);
+	Matrix res(m, n, 0);
 
 	for (int i = 0; i < this->m; i++) 
 	{
@@ -241,7 +230,7 @@ Matrix Matrix::operator * (const double& scalar)
 
 Matrix Matrix::operator / (const double& scalar)
 {
-	Matrix res(m, n);
+	Matrix res(m, n, 0);
 	if (scalar == (0)) throw Divizion_By_Zero();
 	for (int i = 0; i < this->m; i++) {
 		for (int j = 0; j < this->n; j++) {
