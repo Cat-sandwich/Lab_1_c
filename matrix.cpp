@@ -30,6 +30,7 @@ Matrix::Matrix(int m, int n)
 
 Matrix::Matrix(int m, int n, const double& value)
 {
+	//*this = Matrix(m, n);
 	Set_m(m);
 	Set_n(n);
 
@@ -230,8 +231,9 @@ Matrix Matrix::operator * (const double& scalar)
 
 Matrix Matrix::operator / (const double& scalar)
 {
-	Matrix res(m, n, 0);
 	if (scalar == (0)) throw Divizion_By_Zero();
+	Matrix res(m, n, 0);
+	
 	for (int i = 0; i < this->m; i++) {
 		for (int j = 0; j < this->n; j++) {
 			res.data[i][j] = data[i][j] / scalar;

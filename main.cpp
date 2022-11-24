@@ -45,16 +45,18 @@ void Сhange_Matrix(Matrix** Many_Matrix, const int& current)
 	int i = Check_Int() - 1;
 	cout << "Введите номер столбца: ";
 	int j = Check_Int() - 1;
-	cout << "Введите значение, на которое вы хотите поменять число:";
-	double value = Check_Double();
+	
 	try
 	{
+		((*Many_Matrix)[current]).Get_Data(i, j);
+		cout << "Введите значение, на которое вы хотите поменять число:";
+		double value = Check_Double();
 		((*Many_Matrix)[current])(i, j, value);
 	}
 	catch (Exception& error)
 	{
 		error.print();
-		system("pause");
+		
 	}
 }
 
@@ -159,14 +161,15 @@ void menu1()
 			try
 			{
 				New_matrix = Many_Matrix[current] + Many_Matrix[m - 1];
+				Add_Matrix(&size, &Many_Matrix, New_matrix);
+				current = size - 1;
 			}
 			catch (Exception& error)
 			{
 				error.print();
 				system("pause");
 			}
-			Add_Matrix(&size, &Many_Matrix, New_matrix);
-			current = size - 1;
+			
 			break;
 		case(51):
 			if ((size + 1) < 2)
@@ -187,14 +190,15 @@ void menu1()
 			try
 			{
 				New_matrix = Many_Matrix[current] - Many_Matrix[m - 1];
+				Add_Matrix(&size, &Many_Matrix, New_matrix);
+				current = size - 1;
 			}
 			catch (Exception& error)
 			{
 				error.print();
 				system("pause");
 			}
-			Add_Matrix(&size, &Many_Matrix, New_matrix);
-			current = size - 1;
+			
 			break;
 		case(52):
 			if ((size + 1) < 2)
@@ -212,14 +216,15 @@ void menu1()
 			try
 			{
 				New_matrix = Many_Matrix[current] * Many_Matrix[m - 1];
+				Add_Matrix(&size, &Many_Matrix, New_matrix);
+				current = size - 1;
 			}
 			catch (Exception& error)
 			{
 				error.print();
 				system("pause");
 			}
-			Add_Matrix(&size, &Many_Matrix, New_matrix);
-			current = size - 1;
+			
 			break;
 
 		case(53):
@@ -382,6 +387,5 @@ int main()
 	system("pause");
 	menu1();
 
-	system("pause");
 	return 0;
 }
